@@ -1,5 +1,4 @@
 // Loction in template where we want to render results:
-var placeholder = document.getElementById("mydata");
 
 var errorLocation = document.getElementById("myerror");
 
@@ -13,25 +12,30 @@ toastr.options.progressBar = true;
 toastr.options.timeOut = 3000; // How long the toast will display without user interaction
 toastr.options.extendedTimeOut = 6000; // How long the toast will display after a user hovers over it
 toastr.options.closeMethod = "fadeOut";
-toastr.options.closeDuration = 900;
+toastr.options.closeDuration = 0;
 toastr.options.closeEasing = "swing";
 toastr.options.showMethod = "slideDown";
 toastr.options.hideMethod = "slideUp";
 toastr.options.closeMethod = "slideUp";
 
-document.addEventListener("DOMContentLoaded", function() {
+$(document).ready(function() {
+  $(".timepicker").timepicker();
   var elems = document.querySelectorAll(".datepicker");
   var options = {
     format: "dd/mm/yyyy",
-    showDaysInNextAndPreviousMonths: true
+    showDaysInNextAndPreviousMonths: true,
+    autoClose: true
   };
   var instances = M.Datepicker.init(elems, options);
 });
 
+document.addEventListener("DOMContentLoaded", function() {});
+
 // Action - on clicking Get button
 btn.addEventListener("click", function() {
   console.log("Get clicked ... ");
-  errorLocation.innerHTML = "<p>Waiting for connection...</p>";
+  //errorLocation.innerHTML = "<p>Waiting for connection...</p>";
+  document.myToastr = toastr.info("Searching for data ...");
 
   var ourRequest = new XMLHttpRequest();
   ourRequest.open(
@@ -47,7 +51,11 @@ btn.addEventListener("click", function() {
   //ourRequest.open('GET', 'https://reqres.in/api/users1.json');
   ourRequest.onload = () => {
     console.log("Got response ... ");
-    toastr.info("Success!");
+    // toastr.forEach(t => {
+    //   t.clear();
+    // });
+    toastr.clear();
+    toastr.success("Done!");
     if (ourRequest.status >= 200 && ourRequest.status < 400) {
       console.log("Response = ", ourRequest.responseText);
 
@@ -97,17 +105,34 @@ btn.addEventListener("click", function() {
 renderHTML = function(data) {
   console.log(data);
   var htmlString =
-    "<table><thead><td>ID</td><td>Name</td><td>Year</td></thead><tbody>";
+    "<table id='myTable' ><thead><th>ID</th><td>Name</th><th>Number</th><th>Age</th><th>Other</th></thead><tbody>";
 
-  data.forEach(
-    (item, idx) =>
-      (htmlString += `<tr> <td>[${idx}]</td><td>${item.employee_name}</td><td>${
-        item.employee_age
-      }</td></tr>`)
-  );
-
+  if (data.lenght === 0) {
+  } else {
+    data.forEach(
+      (item, idx) =>
+        (htmlString += `<tr><td>[${idx}]</td><td>${
+          item.employee_name
+        }</td><td>${item.employee_age}</td></tr>`)
+    );
+  }
   htmlString += "</tbody></table>";
+  //     +
+  //     `<div class="col-md-12 center text-center">
+  //   <span class="left" id="total_reg"></span>
+  //       <ul class="pagination pager" id="myPager"></ul>
+  //     </div>`
 
-  placeholder.innerHTML = htmlString;
+  //placeholder.innerHTML = htmlString;
+  document.getElementById("mydata").innerHTML = htmlString;
+
+  //   $("#myTable").smpSortableTable(data, 10, "en", {
+  //     responsive: true
+  //   });
+  $("#myTable").smpSortableTable(data, 10);
 };
+
+function RefreshTable() {
+  $("#myTable").load("index.html #myTable");
+}
 // End: btn.addEventListener()

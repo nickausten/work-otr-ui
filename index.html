@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reports</title>
     <link rel="stylesheet" href="css/materialize.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/smpSortableTable.css" />
+
     <link rel="stylesheet" href="css/toastr.css" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
@@ -39,8 +45,12 @@
         </div>
 
         <div class="card">
-          <div class="row">
-            <div class="col s12">
+          <div class="card-content">
+            <span class="card-title"
+              >Select Date Range and Train (optional)</span
+            >
+            <hr />
+            <div class="row col s12">
               <div class="input-field col s2">
                 <input
                   placeholder="Date"
@@ -49,6 +59,15 @@
                   class="datepicker"
                 />
                 <label for="from_date">From:</label>
+              </div>
+              <div class="input-field col s2">
+                <input
+                  placeholder="From Time"
+                  id="from_time"
+                  type="text"
+                  class="timepicker"
+                />
+                <label for="from_time">Time:</label>
               </div>
               <div class="input-field col s2">
                 <input
@@ -61,22 +80,30 @@
               </div>
               <div class="input-field col s2">
                 <input
-                  placeholder="Train ID (optional)"
-                  id="from_date"
+                  placeholder="To Time"
+                  id="to_time"
                   type="text"
-                  class="datepicker tooltipped"
+                  class="timepicker"
                 />
-                <label for="from_date">From:</label>
+                <label for="to_time">Time:</label>
               </div>
-
-              <div class="col s2">
-                <a
-                  id="get-btn"
-                  class="btn-floating btn-large waves-effect waves-heavy blue"
-                >
-                  <i class="large material-icons">Go!</i></a
-                >
+              <div class="input-field col s3">
+                <input
+                  placeholder="Train ID (optional)"
+                  id="train_id"
+                  type="number"
+                  class="tooltipped"
+                />
+                <label for="from_date">Train ID:</label>
               </div>
+            </div>
+            <div class="col s2">
+              <a
+                id="get-btn"
+                class="btn btn-large waves-effect waves-medium cyan"
+              >
+                <i class="mz-">Get data!</i></a
+              >
             </div>
           </div>
         </div>
@@ -92,7 +119,9 @@
     <footer class="page-footer cyan">
       <div class="footer-copyright">
         <div class="container">
-          <a class="grey-text text-lighten-4 left" href="http://ansaldo-sts.com"
+          <a
+            class="grey-text text-lighten-4 left"
+            href="http://www.ansaldo-sts.com"
             >© 2019 Copyright Ansaldo STS</a
           >
 
@@ -107,11 +136,6 @@
     <script src="js/materialize.min.js" type="text/javascript"></script>
     <script src="js/toastr.min.js" type="text/javascript"></script>
     <script src="js/main.js" type="text/javascript"></script>
-    <!-- <script>
-      $("#mydata").DataTable({
-        data: data,
-        columns: [{ data: "name" }, { data: "year" }]
-      });
-    </script> -->
+    <script src="js/smpSortableTable.js"></script>
   </body>
 </html>
