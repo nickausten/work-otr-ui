@@ -1,0 +1,35 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+th,
+tr,
+td {
+  border-spacing: 0;
+  padding: 0;
+  margin: 0;
+  color: #22f;
+}
+
+thead {
+  background-color: #ddd;
+  font-weight: bold;
+}
+
+.data-space {
+  min-height: 300px;
+}
+
+#errmsg {
+  background-color: darkolivegreen;
+  color: white;
+}
+
+.tab:hover {
+  background-color: lightgray;
+  color: white;
+  font-weight: bold;
+  text-decoration: underline !important;
+}
