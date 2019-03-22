@@ -49,7 +49,7 @@
             <span class="card-title"
               >Select Date Range and Train (optional)</span
             >
-            <hr />
+
             <div class="row col s12">
               <div class="input-field col s2">
                 <input
@@ -87,20 +87,29 @@
                 />
                 <label for="to_time">Time:</label>
               </div>
-              <div class="input-field col s3">
+              <div class="input-field col s2">
                 <input
-                  placeholder="Train ID (optional)"
+                  placeholder="Starts with"
                   id="train_id"
                   type="number"
                   class="tooltipped"
                 />
-                <label for="from_date">Train ID:</label>
+                <label for="train_id">Train ID (opt):</label>
+              </div>
+              <div class="input-field col s2">
+                <input
+                  placeholder="Category"
+                  id="train_cat"
+                  type="text"
+                  class="tooltipped"
+                />
+                <label for="train_cat">Category (opt):</label>
               </div>
             </div>
             <div class="col s2">
               <a
                 id="get-btn"
-                class="btn btn-large waves-effect waves-medium cyan"
+                class="btn btn-small waves-effect waves-medium cyan"
               >
                 <i class="mz-">Get data!</i></a
               >

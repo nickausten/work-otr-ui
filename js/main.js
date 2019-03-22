@@ -1,42 +1,28 @@
-// Loction in template where we want to render results:
-
-var errorLocation = document.getElementById("myerror");
-
 // This is the handle of our "Get" button
-var btn = document.getElementById("get-btn");
-
 console.log("Started ...");
 
-// Configure 'toastr' notification system
-toastr.options.progressBar = true;
-toastr.options.timeOut = 3000; // How long the toast will display without user interaction
-toastr.options.extendedTimeOut = 6000; // How long the toast will display after a user hovers over it
-toastr.options.closeMethod = "fadeOut";
-toastr.options.closeDuration = 0;
-toastr.options.closeEasing = "swing";
-toastr.options.showMethod = "slideDown";
-toastr.options.hideMethod = "slideUp";
-toastr.options.closeMethod = "slideUp";
-
 $(document).ready(function() {
-  $(".timepicker").timepicker();
-  var elems = document.querySelectorAll(".datepicker");
-  var options = {
+  toasterConfig();
+
+  $(".timepicker").timepicker({
+    default: "now",
+    twelveHour: false, // change to 12 hour AM/PM clock from 24 hour
+    format: "HH:ss",
+    autoclose: false
+  });
+  // $(".timepicker").timepicker();
+  // M.Datepicker.init($(".datepicker"), {
+  $(".datepicker").datepicker({
     format: "dd/mm/yyyy",
     showDaysInNextAndPreviousMonths: true,
     autoClose: true
-  };
-  var instances = M.Datepicker.init(elems, options);
+  });
 });
 
-document.addEventListener("DOMContentLoaded", function() {});
-
-// Action - on clicking Get button
-btn.addEventListener("click", function() {
+// Get button 'click' handler
+$("#get-btn").on("click", () => {
   console.log("Get clicked ... ");
-  //errorLocation.innerHTML = "<p>Waiting for connection...</p>";
-  document.myToastr = toastr.info("Searching for data ...");
-
+  toastr.info("Searching for data ...");
   var ourRequest = new XMLHttpRequest();
   ourRequest.open(
     "GET",
@@ -51,16 +37,12 @@ btn.addEventListener("click", function() {
   //ourRequest.open('GET', 'https://reqres.in/api/users1.json');
   ourRequest.onload = () => {
     console.log("Got response ... ");
-    // toastr.forEach(t => {
-    //   t.clear();
-    // });
     toastr.clear();
     toastr.success("Done!");
     if (ourRequest.status >= 200 && ourRequest.status < 400) {
       console.log("Response = ", ourRequest.responseText);
 
       var ourData = JSON.parse(ourRequest.responseText);
-      errorLocation.innerHTML = "<br />";
       renderHTML(ourData);
     } else {
       console.log("We connected to the server, but it returned an error.");
@@ -74,11 +56,6 @@ btn.addEventListener("click", function() {
     var msg = "Connection error...";
     console.log(msg);
     toastr.error(msg);
-
-    // Maybe we should render the error on the web page ....
-    var htmlString = `<h3 id='errmsg'>${msg}</h3><br><hl>`;
-
-    errorLocation.innerHTML = htmlString;
     ourRequest.close();
   };
 
@@ -86,13 +63,9 @@ btn.addEventListener("click", function() {
   // Set 'close' handler
   //
   ourRequest.close = ev => {
-    var myErrMsg = "[Some error message]";
-    console.log("Connection error. On close ...  Event code = " + myErrMsg);
-
-    // Maybe we should render the error on the web page ....
-    var htmlString = `<h3>On clode: ${myErrMsg}</h3><br><hl>`;
-
-    errorLocation.innerHTML = htmlString;
+    var msg = "Data connection closed";
+    console.log(msg);
+    toastr.warning(msg);
   };
 
   ourRequest.send();
@@ -132,7 +105,21 @@ renderHTML = function(data) {
   $("#myTable").smpSortableTable(data, 10);
 };
 
-function RefreshTable() {
-  $("#myTable").load("index.html #myTable");
-}
 // End: btn.addEventListener()
+
+//-----------------------------------------------------------------------------
+//  Miscellaneous functions
+//-----------------------------------------------------------------------------
+
+// Configure 'toastr' notification system
+toasterConfig = () => {
+  toastr.options.progressBar = true;
+  toastr.options.timeOut = 3000; // How long the toast will display without user interaction
+  toastr.options.extendedTimeOut = 6000; // How long the toast will display after a user hovers over it
+  toastr.options.closeMethod = "fadeOut";
+  toastr.options.closeDuration = 0;
+  toastr.options.closeEasing = "swing";
+  toastr.options.showMethod = "slideDown";
+  toastr.options.hideMethod = "slideUp";
+  toastr.options.closeMethod = "slideUp";
+};
