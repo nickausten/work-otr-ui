@@ -1,0 +1,23 @@
+{
+  "name": "work-otr-ui",
+  "version": "1.0.0",
+  "description": "Frontend for accessing On Time Running reports",
+  "main": "index.html",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.16.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nickausten/work-otr-ui.git"
+  },
+  "author": "Nick Austen",
+  "license": "SEE LICENSE IN License.txt",
+  "bugs": {
+    "url": "https://github.com/nickausten/work-otr-ui/issues"
+  },
+  "homepage": "https://github.com/nickausten/work-otr-ui#readme"
+}
