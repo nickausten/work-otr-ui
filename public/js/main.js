@@ -1,17 +1,15 @@
-// This is the handle of our "Get" button
-console.log("Started ...");
-
+// Doc ready handler
+//
 $(document).ready(function() {
   toasterConfig();
 
   $(".timepicker").timepicker({
     default: "now",
-    twelveHour: false, // change to 12 hour AM/PM clock from 24 hour
+    twelveHour: false,
     format: "HH:ss",
     autoclose: false
   });
   // $(".timepicker").timepicker();
-  // M.Datepicker.init($(".datepicker"), {
   $(".datepicker").datepicker({
     format: "dd/mm/yyyy",
     showDaysInNextAndPreviousMonths: true,
@@ -20,50 +18,44 @@ $(document).ready(function() {
 });
 
 // Get button 'click' handler
+//
 $("#get-btn").on("click", () => {
-  console.log("Get clicked ... ");
   toastr.info("Searching for data ...");
-  var ourRequest = new XMLHttpRequest();
-  ourRequest.open(
-    "GET",
-    //"http://localhost:34010/rest/services/info/getActualTrains?from=01012017000000&to=31122020235959"
-    // "http://102.32.45.88:34010/rest/services/info/getActualTrains?from=01012017000000&to=31122020235959"
-    "http://dummy.restapiexample.com/api/v1/employees"
-  );
 
+  var ourRequest = new XMLHttpRequest();
+  let url = "http://localhost:8889/api";
+  //let url = cfg.server.url || "http://localhost:8888/api";
+  //cfg.debug && console.log("Request URL:", url);
+  console.log("Request URL:", url);
+  ourRequest.open("GET", url, true);
+
+  // Request 'loaded' handler (SUCCESS) - should have data returned.
   //
-  // Set 'loaded' handler (SUCCESS) - should have data returned.
-  //
-  //ourRequest.open('GET', 'https://reqres.in/api/users1.json');
-  ourRequest.onload = () => {
-    console.log("Got response ... ");
+  ourRequest.onload = ev => {
     toastr.clear();
     toastr.success("Done!");
     if (ourRequest.status >= 200 && ourRequest.status < 400) {
+      //cfg.debug && console.log("Response = ", ourRequest.responseText);
       console.log("Response = ", ourRequest.responseText);
-
-      var ourData = JSON.parse(ourRequest.responseText);
-      renderHTML(ourData);
+      renderHTML(JSON.parse(ourRequest.responseText));
     } else {
       console.log("We connected to the server, but it returned an error.");
     }
   };
 
-  //
-  // Set 'error' handler
+  // Request 'error' handler
   //
   ourRequest.onerror = ev => {
-    var msg = "Connection error...";
+    var msg = `Connection error...${ev}`;
     console.log(msg);
     toastr.error(msg);
     ourRequest.close();
   };
 
-  //
-  // Set 'close' handler
+  // Request 'close' handler
   //
   ourRequest.close = ev => {
-    var msg = "Data connection closed";
+    var msg = `Data connection closed ${ev}`;
     console.log(msg);
     toastr.warning(msg);
   };
@@ -72,10 +64,9 @@ $("#get-btn").on("click", () => {
 });
 // End of addEventListener(click)
 
-//-----------------------------------------------------------------------------
 //  r e n d e r H T M L ( )
-//-----------------------------------------------------------------------------
-renderHTML = function(data) {
+//
+renderHTML = data => {
   console.log(data);
   var htmlString =
     "<table id='myTable' ><thead><th>ID</th><td>Name</th><th>Number</th><th>Age</th><th>Other</th></thead><tbody>";
@@ -90,28 +81,15 @@ renderHTML = function(data) {
     );
   }
   htmlString += "</tbody></table>";
-  //     +
-  //     `<div class="col-md-12 center text-center">
-  //   <span class="left" id="total_reg"></span>
-  //       <ul class="pagination pager" id="myPager"></ul>
-  //     </div>`
-
-  //placeholder.innerHTML = htmlString;
   document.getElementById("mydata").innerHTML = htmlString;
-
-  //   $("#myTable").smpSortableTable(data, 10, "en", {
-  //     responsive: true
-  //   });
   $("#myTable").smpSortableTable(data, 10);
 };
-
 // End: btn.addEventListener()
 
 //-----------------------------------------------------------------------------
 //  Miscellaneous functions
 //-----------------------------------------------------------------------------
 
-// Configure 'toastr' notification system
 toasterConfig = () => {
   toastr.options.progressBar = true;
   toastr.options.timeOut = 3000; // How long the toast will display without user interaction
