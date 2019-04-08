@@ -1,7 +1,7 @@
 {
   "debug": true,
   "server": {
-    "url": "http://127.0.0.1:8888/api"
+    "url": "http://127.0.0.1:8889/api"
   },
   "ui": {
     "port": 8899

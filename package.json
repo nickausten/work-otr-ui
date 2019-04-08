@@ -4,7 +4,9 @@
   "description": "Frontend for accessing On Time Running reports",
   "main": "app.js",
   "dependencies": {
-    "express": "^4.16.4"
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0"
