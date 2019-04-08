@@ -1,11 +1,12 @@
 const cfg = require("./app-config.json");
 const express = require("express");
+const path = require("path");
 const app = express();
 const fs = require("fs");
 
 const port = cfg.ui.port || 8889;
 
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => res.send("Please use: /ui route"));
 

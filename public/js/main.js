@@ -2,7 +2,7 @@
 //
 $(document).ready(function() {
   toasterConfig();
-
+  console.log("main.js: Loaded!");
   $(".timepicker").timepicker({
     default: "now",
     twelveHour: false,
