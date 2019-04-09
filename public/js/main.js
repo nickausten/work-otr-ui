@@ -17,72 +17,64 @@ $(document).ready(function() {
   });
 });
 
+normaliseDate = function(inputDate, separator = "/") {
+  dateArray = inputDate.split(separator);
+  return dateArray.join("");
+};
 // Get button 'click' handler
 //
 $("#get-btn").on("click", () => {
   toastr.info("Searching for data ...");
 
-  var ourRequest = new XMLHttpRequest();
-  let url = "http://localhost:8899/api";
-  //let url = cfg.server.url || "http://localhost:8888/api";
-  //cfg.debug && console.log("Request URL:", url);
-  console.log("Request URL:", url);
-  ourRequest.open("GET", url, true);
-
-  // Request 'loaded' handler (SUCCESS) - should have data returned.
-  //
-  ourRequest.onload = ev => {
-    toastr.clear();
-    toastr.success("Done!");
-    if (ourRequest.status >= 200 && ourRequest.status < 400) {
-      //cfg.debug && console.log("Response = ", ourRequest.responseText);
-      console.log("Response = ", ourRequest.responseText);
-      renderHTML(JSON.parse(ourRequest.responseText));
-    } else {
-      console.log("We connected to the server, but it returned an error.");
-    }
+  let url = cfg.data.url || "http://localhost:8889/api";
+  my_query = {
+    from_date: normaliseDate($("#from_date").val()),
+    to_date: normaliseDate($("#to_date").val()),
+    train_id: normaliseDate($("#train_id").val())
   };
 
-  // Request 'error' handler
-  //
-  ourRequest.onerror = ev => {
-    var msg = `Connection error...${ev}`;
-    console.log(msg);
-    toastr.error(msg);
-    ourRequest.close();
-  };
+  cfg.debug > 2 && console.log("Request URL:", url);
 
-  // Request 'close' handler
-  //
-  ourRequest.close = ev => {
-    var msg = `Data connection closed ${ev}`;
-    console.log(msg);
-    toastr.warning(msg);
-  };
-
-  ourRequest.send();
+  $.get(url, my_query)
+    .done(respData => {
+      toastr.clear();
+      toastr.success("Done!");
+      cfg.debug > 8 && console.log("Response = ", respData);
+      renderHTML(respData);
+    })
+    .fail(ev => {
+      var msg = `Connection error...${ev}`;
+      console.log(msg);
+      toastr.error(msg);
+    });
 });
 // End of addEventListener(click)
 
 //  r e n d e r H T M L ( )
 //
 renderHTML = data => {
-  console.log(data);
   var htmlString =
-    "<table id='myTable' ><thead><th>ID</th><td>Name</th><th>Number</th><th>Age</th><th>Other</th></thead><tbody>";
+    "<table id='my-table' ><thead><th>Num</th><th>Train ID</th><th>Origin</th><th>Date</th><th>Type</th><th>Class</th><th>Events</th><th>Arr avg</th><th>Dep avg</th></thead><tbody>";
 
-  if (data.lenght === 0) {
+  if (data.length === 0) {
   } else {
-    data.forEach(
-      (item, idx) =>
-        (htmlString += `<tr><td>[${idx}]</td><td>${
-          item.employee_name
-        }</td><td>${item.employee_age}</td></tr>`)
-    );
+    data.forEach((item, idx) => {
+      let parts = item.journeyId.split("/");
+      htmlString +=
+        `<tr><td>${idx}</td><td>${parts[0]}</td><td>${parts[1]}</td><td>${
+          parts[2]
+        }</td><td>${item.service}</td><td>${item.category}</td>` +
+        `<td>${item.eventCount}</td><td>${item.arr.avg}</td><td>${
+          item.dep.avg
+        }</td>` +
+        `</tr>`;
+    });
   }
   htmlString += "</tbody></table>";
-  document.getElementById("mydata").innerHTML = htmlString;
-  $("#myTable").smpSortableTable(data, 10);
+
+  // Now paginate the table
+  document.getElementById("my-table").innerHTML = htmlString;
+  processTable("my-table", 30);
 };
 // End: btn.addEventListener()
 

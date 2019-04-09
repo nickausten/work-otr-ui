@@ -1,0 +1,13 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+body {
+  background-color: #fafafa;
+}
+
+#my-table tbody tr:hover {
+  background-color: rgb(255, 219, 224);
+}

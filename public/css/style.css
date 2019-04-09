@@ -10,17 +10,11 @@ td {
   border-spacing: 0;
   padding: 0;
   margin: 0;
-  color: #22f;
-}
-
-#myTable {
-  padding: 0;
-  margin: 0;
 }
 
 thead {
-  background-color: #ddd;
-  font-weight: bold;
+  background-color: rgb(234, 234, 255);
+  font-weight: normal;
 }
 
 .data-space {
@@ -34,7 +28,13 @@ thead {
 
 .tab:hover {
   background-color: lightgray;
-  color: white;
+  color: #6a6;
   font-weight: bold;
-  text-decoration: underline !important;
+  text-decoration: none !important;
+}
+
+.card-content {
+  padding: 0;
+  margin: 0;
+  border-spacing: 0;
 }
