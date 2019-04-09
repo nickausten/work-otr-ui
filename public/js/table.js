@@ -29,6 +29,7 @@ processTable = function(mytable, perPage) {
   $("#export-btn").bind("click", function() {
     console.log("Export button clicked");
 
+    // Collect data from form
     my_query = {
       from_date: normaliseDate($("#from_date").val()),
       to_date: normaliseDate($("#to_date").val()),

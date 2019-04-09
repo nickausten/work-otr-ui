@@ -15,5 +15,5 @@ exports.convert = function(json) {
     });
     csv.unshift(fields.join(",")); // add header column
   }
-  return csv.join("\r\n");
+  return  csv.join("\r\n");
 };
