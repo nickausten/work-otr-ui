@@ -46,4 +46,9 @@ processTable = function(mytable, perPage) {
     });
     cfg.debug > 4 && console.log("Ajax post returned:", my_resp);
   });
+
+  $("#pdf-btn").bind("click", function() {
+    console.log("PDF button clicked");
+    pdfFromHTML("pdf-table*");
+  }); // Collect data from form
 };

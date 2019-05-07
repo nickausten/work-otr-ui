@@ -38,3 +38,13 @@ thead {
   margin: 0;
   border-spacing: 0;
 }
+
+.mz- {
+  padding: 0;
+  margin: 0;
+  border-spacing: 0;
+}
+
+nav.cyan {
+  max-height: 30px;
+}

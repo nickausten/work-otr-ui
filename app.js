@@ -9,6 +9,7 @@ const fs = require("fs");
 const port = cfg.ui.port || 8889;
 
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "pdf")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -19,8 +20,6 @@ app.get("/", (req, res) => {
   fs.readFile(fname, (err, data) => {
     if (err) {
       cfg.debug || console.log(`Error reading file ${fname}`);
-      res.writeHead(404);
-      res.write(`Whoops! File ${fname} not found!`);
     } else {
       cfg.debug || console.log(data);
       res.write(data);
@@ -29,6 +28,27 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/pdf", function(req, res) {
+  let pdf_file = cfg.index || "/pdf/pdf-report.pdf";
+
+  let fname = __dirname + pdf_file;
+  cfg.debug > 4 && console.log(`/pdf: ${fname}`);
+  fs.readFile(fname, (err, data) => {
+    if (err) {
+      cfg.debug > 4 && console.log(`/pdf: Error: ${err}`);
+      res.writeHead(404);
+      res.write(`<H1>Error!</H1><hr><br>`);
+      res.end(`<p>We could not find the file ${fname}!</p>`);
+    } else {
+      cfg.debug > 4 &&
+        console.log(`/pdf: Read OK - render: ${fname} as application/pdf`);
+      res.contentType("application/pdf");
+      // res.writeHead(201);
+      res.send(data);
+      // res.end();
+    }
+  });
+});
 app.post("/api", (req, res) => {
   cfg.debug > 4 && console.log(req.body);
   let myCSV = Object.keys(req.body) + "\n";
@@ -43,7 +63,7 @@ app.post("/api", (req, res) => {
       })
     );
     // res.writeHead(200);
-    // res.end();
+    res.end();
   } else {
     res.writeHead(204); // No content
   }

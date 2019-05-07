@@ -54,7 +54,7 @@ $("#get-btn").on("click", () => {
 //
 renderHTML = data => {
   var htmlString =
-    "<table id='my-table' ><thead><th>Num</th><th>Train ID</th><th>Origin</th><th>Date</th><th>Type</th><th>Class</th><th>Events</th><th>Arr avg</th><th>Dep avg</th></thead><tbody>";
+    "<table id='my-table' ><thead><th>Num</th><th>Train ID</th><th>Origin</th><th>Date</th><th>Type</th><th>Class</th><th>Events</th><th>Atot</th><th>Aav</th><th>Amx</th><th>Dtot</th><th>Dav</th><th>Dmx</th></thead><tbody>";
 
   if (data.length === 0) {
   } else {
@@ -64,9 +64,7 @@ renderHTML = data => {
         `<tr><td>${idx}</td><td>${parts[0]}</td><td>${parts[1]}</td><td>${
           parts[2]
         }</td><td>${item.service}</td><td>${item.category}</td>` +
-        `<td>${item.eventCount}</td><td>${item.arr.avg}</td><td>${
-          item.dep.avg
-        }</td>` +
+        `<td>${item.eventCount}</td><td>${item.arr.sum}</td><td>${item.arr.avg}</td><td>${item.arr.max}</td><td>${item.dep.sum}</td><td>${item.dep.avg}</td><td>${item.dep.max}</td>` +
         `</tr>`;
     });
   }
